@@ -1,2 +1,6 @@
 OctoPrint
 python-periphery
+requests
+threading
+jsonpickle
+nut2

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{@types/jquery, @types/json-query, @types/knockout, @types/knockout-secure-binding, @types/knockout.editables, @types/knockout.es5, @types/knockout.kogrid, @types/knockout.mapper, @types/knockout.mapping, @types/knockout.rx, @types/knockout.validation, @types/knockout.viewmodel}" />
+  </component>
+</project>

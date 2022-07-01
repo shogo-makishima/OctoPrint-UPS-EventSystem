@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="jdk" jdkName="Python 3.10" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@types/knockout-secure-binding" level="application" />
+    <orderEntry type="library" name="@types/knockout" level="application" />
+    <orderEntry type="library" name="@types/knockout.viewmodel" level="application" />
+    <orderEntry type="library" name="@types/knockout.mapper" level="application" />
+    <orderEntry type="library" name="@types/knockout.mapping" level="application" />
+    <orderEntry type="library" name="@types/knockout.validation" level="application" />
+    <orderEntry type="library" name="@types/knockout.editables" level="application" />
+    <orderEntry type="library" name="@types/knockout.es5" level="application" />
+    <orderEntry type="library" name="@types/knockout.kogrid" level="application" />
+    <orderEntry type="library" name="@types/knockout.rx" level="application" />
+    <orderEntry type="library" name="@types/json-query" level="application" />
+    <orderEntry type="library" name="@types/jquery" level="application" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/octoprint_psucontrol/templates" />
+      </list>
+    </option>
+  </component>
+</module>

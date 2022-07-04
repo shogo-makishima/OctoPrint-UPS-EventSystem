@@ -3,11 +3,11 @@ from .. import NUT_MANAGER
 from random import randint
 
 class ON_POWER_ON(Trigger):
-    def __init__(self, values: dict[str, str] = { }):
+    def __init__(self, values: dict[str, str] = { }, id: str = None):
         self.defaultValues = {}
         """ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР! Базовые переменные!"""
 
-        super(ON_POWER_ON, self).__init__("ON_POWER_ON", values)
+        super(ON_POWER_ON, self).__init__("ON_POWER_ON", values, id)
 
         self.lastInputState: bool = True
         """Последнее входящее напряжение"""

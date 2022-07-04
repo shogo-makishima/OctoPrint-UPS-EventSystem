@@ -1,4 +1,4 @@
-import jsonpickle
+import jsonpickle, logging
 
 from . import Trigger, Event
 from . import TRIGGERS_DICT, EVENTS_DICT
@@ -38,6 +38,29 @@ class EventManager:
         :return: [list] => список текущих событий
         """
         return jsonpickle.encode(self.listTriggers)
+
+    def GenerateFromList(self, list: dict) -> None:
+        """
+        Воссоздать события из словаря
+        \n
+        :param json: [dict] => словарь событий
+        :return: None
+        """
+        self.listTriggers.clear()
+
+        print(list)
+
+        if (list == [{}]):
+            return
+
+        for trigger in list:
+            triggerValues: dict = { value["name"]:value["value"] for value in trigger["sValues"] }
+            sTrigger: Trigger = self.Append(TRIGGERS_DICT[trigger["sName"]](triggerValues, trigger["sID"]))
+
+            for event in trigger["sEvents"]:
+                eventValues: dict = { value["name"]:value["value"] for value in event["sValues"] }
+                sTrigger.events.append(EVENTS_DICT[event["sName"]](eventValues, event["sID"]))
+
 
     def GetSettingsDict(self) -> dict:
         """

@@ -2,6 +2,25 @@ $(function() {
     // Символы для генерации ID
     const LETTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
 
+    let TRIGGERS_LIST = [{}]
+    let EVENTS_LIST = [{}]
+
+    function findTriggerSettings(name) {
+        for (let i = 0; i < TRIGGERS_LIST.length; i++) {
+            if (TRIGGERS_LIST[i].name === name) return TRIGGERS_LIST[i];
+        }
+
+        return null;
+    }
+
+    function findEventSettings(name) {
+        for (let i = 0; i < EVENTS_LIST.length; i++) {
+            if (EVENTS_LIST[i].name === name) return EVENTS_LIST[i];
+        }
+
+        return null;
+    }
+
     // Сгенерировать ID элемента
     function GenerateID(type, length) {
         let s_result = type;
@@ -26,13 +45,17 @@ $(function() {
 
     // Компонент события
     class SEvent {
-        constructor(name, values) {
-            // Создание уникального ID
-            this.sID = GenerateID("E", 32);
+        constructor(name, values, id = null) {
+            if (id === null) {
+                // Создание уникального ID
+                this.sID = GenerateID("E", 32);
+            } else {
+                this.sID = id;
+            }
             // Имя события для сохранения
             this.sName = name;
             // Переменные события для хранения
-            this.sValues = values;
+            this.sValues = DeepCopy(values);
             // ID события обозрева
             this.ID = ko.observable(this.sID);
 
@@ -42,8 +65,12 @@ $(function() {
             // Имя события обозрева
             this.name = ko.observable(this.sName);
             this.name.subscribe(function (newValue) {
-                this.sName = newValue.name;
-                this.sValues = DeepCopy(newValue.values);
+                if (newValue === this.sName) return;
+
+                console.log(newValue);
+
+                this.sName = newValue;
+                this.sValues = DeepCopy(findEventSettings(this.sName).values);
                 this.values(this.sValues);
 
                 console.log("CHANGED -> " + this.ID + " : " + this.sName + " : " + this.sValues);
@@ -53,13 +80,17 @@ $(function() {
 
     // Компонент триггера
     class STrigger {
-        constructor(name, values) {
-            // Создание уникального ID
-            this.sID = GenerateID("T", 32);
+        constructor(name, values, id = null) {
+            if (id === null) {
+                // Создание уникального ID
+                this.sID = GenerateID("T", 32);
+            } else {
+                this.sID = id;
+            }
             // Имя триггера для сохранения
             this.sName = name;
             // Переменные триггера для хранения
-            this.sValues = values;
+            this.sValues = DeepCopy(values);
             // События по триггеру
             this.sEvents = []
 
@@ -75,8 +106,14 @@ $(function() {
             // Имя триггера обозрева
             this.name = ko.observable(this.sName);
             this.name.subscribe(function (newValue) {
-                this.sName = newValue.name;
-                this.sValues = DeepCopy(newValue.values);
+                if (newValue === this.sName) return;
+
+                console.log(newValue);
+
+                this.sName = newValue;
+                console.log(TRIGGERS_LIST);
+                console.log(JSON.stringify(findTriggerSettings(this.sName)));
+                this.sValues = DeepCopy(findTriggerSettings(this.sName).values);
                 this.sEvents = []
 
                 this.values(this.sValues);
@@ -106,8 +143,13 @@ $(function() {
             }
         }
 
-        addNewEvent() {
-            this.sEvents.push(new SEvent("NONE", {}));
+        pushEvent(event) {
+            this.sEvents.push(event);
+            this.events(this.sEvents);
+        }
+
+        addNewEvent(settingsEvents) {
+            this.sEvents.push(new SEvent(settingsEvents()[0].name, settingsEvents()[0].values));
             this.events(this.sEvents);
         }
     }
@@ -131,8 +173,22 @@ $(function() {
 
         self.onBeforeBinding = function() {
             self.getTriggersList();
+            self.getCustomTriggersList();
+        }
 
-            // self.customTriggers(self._triggersList);
+        // Сохранить настройки
+        self.saveData = function() {
+            console.log(self.customTriggers());
+
+            let data = {
+                plugins: {
+                    upseventsystem: {
+                        customTriggers: self.customTriggers(),
+                    }
+                }
+            };
+
+			self.settings.saveData(data);
         }
 
         // Найти триггер по ID
@@ -145,13 +201,7 @@ $(function() {
         // Добавить новый триггер
         // : name : строка с название триггера
         self.addNewTrigger = function () {
-            self.customTriggers.push(new STrigger("NONE", {}));
-
-            // self.customTriggers(self._triggersList);
-
-            console.log(JSON.stringify(self.customTriggers()));
-
-            // console.log(JSON.stringify(self._triggersList));
+            self.customTriggers.push(new STrigger(self.settingsTriggers()[0].name, self.settingsTriggers()[0].values));
         }
 
         // Удалить триггер по ID
@@ -167,30 +217,56 @@ $(function() {
                 url: "plugin/upseventsystem/get_triggers_list",
                 cache: false,
                 dataType: "text/json",
+                async: false,
                 statusCode: {
                     200: function(data) {
                         let json = JSON.parse(data.responseText);
-                        console.log(json);
 
-                        self.settingsTriggers(json["triggers"]);
-                        self.settingsEvents(json["events"]);
+                        TRIGGERS_LIST = json["triggers"];
+                        EVENTS_LIST = json["events"];
 
-                        console.log(self.settingsTriggers(), self.settingsEvents());
+                        self.settingsTriggers(TRIGGERS_LIST);
+                        self.settingsEvents(EVENTS_LIST);
                     }
                 }
             });
         }
 
-		self.saveData = function() {
-            data = {
-                plugins : {
-                    upseventsystem: {
+        // Получить список триггеров и событий
+        self.getCustomTriggersList = function() {
+            $.ajax({
+                type: "GET",
+                url: "plugin/upseventsystem/get_custom_triggers_list",
+                cache: false,
+                dataType: "text/json",
+                async: false,
+                statusCode: {
+                    200: function(data) {
+                        let triggersJson = JSON.parse(data.responseText)["customTriggers"];
+                        console.log("TRIGGERS: " + JSON.stringify(triggersJson));
+
+                        if (JSON.stringify(triggersJson) === "[{}]") return;
+
+                        for (let i = 0; i < triggersJson.length; i++) {
+                            let triggerJson = triggersJson[i];
+
+                            let newTrigger = new STrigger(triggerJson.sName, triggerJson.sValues, triggerJson.sID);
+
+                            for (let i = 0; i < triggerJson.sEvents.length; i++) {
+                                let eventJson = triggerJson.sEvents[i];
+
+                                let newEvent = new SEvent(eventJson.sName, eventJson.sValues, eventJson.sID);
+
+                                newTrigger.pushEvent(newEvent);
+                            }
+
+                            self.customTriggers.push(newTrigger);
+
+                        }
                     }
                 }
-            };
-
-			self.settings.saveData(data);
-		}
+            });
+        }
     }
 
     // This is how our plugin registers itself with the application, by adding some configuration information to

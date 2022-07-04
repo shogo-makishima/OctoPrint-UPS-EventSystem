@@ -2,17 +2,17 @@
 <script src="{{ url_for("static", filename="js/lib/lodash.min.js") }}"></script>
 
 <form class="form-horizontal">
-    <p data-bind="text: ko.toJSON(settingsTriggers)"></p>
-    <div>
-        <button class="btn btn-primary" data-bind="click: addNewTrigger">{{ _('ADD TRIGGER') }}</button>
+    <div style="width: 100%; text-align: left;">
+        <button style="display: inline-block;" class="btn btn-primary" data-bind="click: addNewTrigger">{{ _('ADD TRIGGER') }}</button>
+        <button style="display: inline-block;" class="btn" data-bind="click: $root.saveData">{{ _('SAVE') }}</button>
     </div>
     <br/>
-    <ul data-bind="foreach: { data: customTriggers, as: 'trigger' }" style="background-color: lightgray; width: 100%; text-align: center; list-style: none outside;">
+    <ul data-bind="foreach: { data: $root.customTriggers, as: 'trigger' }" style="background-color: lightgray; width: 85%; text-align: center; list-style: none outside;">
         <li>
             <div>
                 <div style="width: 100%; text-align: left;">
-                    <select class="dropdown" style="display: inline-block;" data-bind="options: $root.settingsTriggers, value: trigger.name, optionsText: 'name'"></select>
-                    <button class="btn" data-bind="click: trigger.addNewEvent" style="display: inline-block;">{{ _('ADD EVENT') }}</button>
+                    <select class="dropdown" style="display: inline-block;" data-bind="options: $root.settingsTriggers, value: trigger.name, optionsValue: 'name', optionsText: 'name', valueAllowUnset: true"></select>
+                    <button class="btn" data-bind="click: function() { trigger.addNewEvent($root.settingsEvents) }" style="display: inline-block;">{{ _('ADD EVENT') }}</button>
                     <button class="btn btn-primary" style="display: inline-block;" data-bind="click: function() { $root.removeTrigger(trigger.ID) }">{{ _('DELETE TRIGGER') }}</button>
                 </div>
                 <ul data-bind="foreach: { data: trigger.values, as: 'tValue' }" style="list-style-type: none; width: 100%; text-align: left; transform: translateX(-25px)">
@@ -26,7 +26,7 @@
                             <br/>
                             <div class="control-group">
                                 <div style="width: 100%; text-align: left;">
-                                    <select style="display: inline-block;" data-bind="options: $root.settingsEvents, value: event.name, optionsText: 'name'" class="dropdown"></select>
+                                    <select style="display: inline-block;" data-bind="options: $root.settingsEvents, value: event.name, optionsValue: 'name', optionsText: 'name', valueAllowUnset: true" class="dropdown"></select>
                                     <button style="display: inline-block;" class="btn btn-primary" data-bind="click: function() { trigger.removeEvent(event.ID) }">{{ _('DELETE EVENT') }}</button>
                                 </div>
                                 <ul data-bind="foreach: { data: event.values, as: 'eValue' }" style="list-style-type: none; width: 100%; text-align: left;">

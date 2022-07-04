@@ -18,14 +18,14 @@ class Event:
     """
     Класс события
     """
-    def __init__(self, name: str = "PT_LOG", values: dict[str, str] = { "x": "10" }) -> None:
+    def __init__(self, name: str = "PT_LOG", values: dict[str, str] = { "x": "10" }, id: str = None) -> None:
         self.name = name
         """Имя события"""
 
         self.values = self.defaultValues | values
         """Переменные события"""
 
-        self.ID = GenerateID("E", 32)
+        self.ID = id if (id != None) else GenerateID("E", 32)
         """ID события"""
 
     def Run(self) -> None:

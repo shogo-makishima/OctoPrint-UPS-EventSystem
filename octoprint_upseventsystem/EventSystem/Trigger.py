@@ -4,7 +4,7 @@ class Trigger:
     """
     Класс триггера, который вызывает функцию события
     """
-    def __init__(self, name: str = "ON_TIME_CHANGE", values: dict[str, str] = { "x" : 10 }) -> None:
+    def __init__(self, name: str = "ON_TIME_CHANGE", values: dict[str, str] = { "x" : 10 }, id: str = None) -> None:
         self.name = name
         """Имя триггера"""
 
@@ -14,7 +14,7 @@ class Trigger:
         self.values = self.defaultValues | values
         """Список переменных для проверки состояния триггера"""
 
-        self.id = GenerateID("T", 32)
+        self.id = id if (id != None) else GenerateID("T", 32)
         """ID Триггера"""
 
     def Update(self) -> None:

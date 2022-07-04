@@ -1,6 +1,8 @@
-import time, copy, jsonpickle
+import time, copy, jsonpickle, logging
 
 from .NutManager import NUT_MANAGER
+
+from .Debug import Debug
 
 from .Event import Event, GenerateID
 from .Trigger import Trigger

@@ -7,68 +7,11 @@ import threading, time, datetime
 from .EventSystem import *
 
 
-# region Класс для сравнения времени
-class Date:
-	"""
-	Класс даты
-	"""
-
-	def __init__(self, hour: int, minute: int) -> None:
-		"""
-		Инициализация класса даты
-		\n
-		:param hour: [int] => час
-		:param minute: [int] => минута
-		"""
-		self.hour = hour
-		self.minute = minute
-
-	def __str__(self):
-		return f"{self.hour}:{self.minute}"
-
-	def __eq__(self, other):
-		return (self.hour == other.hour and self.minute == other.minute)
-
-	def __ge__(self, other):
-		return self.__eq__(other) or self.__gt__(other)
-
-	def __gt__(self, other):
-		s_hour = self.hour
-		if (self.hour == 0): s_hour = 24
-
-		o_hour = other.hour
-		if (other.hour == 0): o_hour = 24
-
-		if (s_hour > o_hour):
-			return True
-		elif (s_hour == o_hour):
-			return (self.minute > other.minute)
-
-		return False
-#endregion
-#region Мусор
-def Thread(func):
-    """
-    Декоратор Thread, для запуска функции в отдельном потоке
-    """
-    def wrapper(*args, **kwargs):
-        thread = threading.Thread(target=func, args=args, kwargs=kwargs)
-        thread.start()
-    return wrapper
-#endregion
-
 class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.TemplatePlugin, octoprint.plugin.SettingsPlugin, octoprint.plugin.AssetPlugin, octoprint.plugin.BlueprintPlugin):
 	def on_after_startup(self):
-		print(EVENT_MANAGER.GetTriggerStr())
+		Debug.LOGGER = self._logger
 
-		fTrigger = EVENT_MANAGER.Append(TRIGGERS_DICT["ON_POWER_OFF"]({}))
-		fTrigger.Connect(EVENTS_DICT["PT_LOG"]({"s": "POWER OFF!"}))
-
-		sTrigger = EVENT_MANAGER.Append(TRIGGERS_DICT["ON_POWER_ON"]({}))
-		sTrigger.Connect(EVENTS_DICT["PT_LOG"]({"s": "POWER ON!"}))
-
-		print(EVENT_MANAGER.GetTriggerStr())
-		print(EVENT_MANAGER.GetSettingsDict())
+		self.ParseTriggers(self._settings.settings.get(["plugins", "upseventsystem"], merged=True))
 
 		self.updateTimer = octoprint.util.RepeatedTimer(0.25, self.Update)
 		self.updateTimer.start()
@@ -88,20 +31,38 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		\n
 		:return: None
 		"""
-
 		try:
+			NUT_MANAGER.UpdateUpsValues()
 			EVENT_MANAGER.Update()
-			print("UPS is Alive!")
 		except Exception as exception:
-			print(exception)
+			Debug.Error(Debug, "ERROR")
+			Debug.LOGGER.exception()
+
+	def ParseTriggers(self, data) -> None:
+		"""
+		Отпарсить словарь триггеров
+		\n
+		:param data: [dict] => словарь триггеров
+		:return: None
+		"""
+		try:
+			EVENT_MANAGER.GenerateFromList(data["customTriggers"])
+			Debug.Success(Debug, "Parse new events has complete!")
+		except Exception as exception:
+			Debug.Error(Debug, "ERROR")
+			Debug.LOGGER.exception()
 
 	@octoprint.plugin.BlueprintPlugin.route("/get_triggers_list", methods=["GET"])
 	def GetTriggersList(self):
 		return EVENT_MANAGER.GetSettingsDict(), 200
 
+	@octoprint.plugin.BlueprintPlugin.route("/get_custom_triggers_list", methods=["GET"])
+	def GetCustomTriggersList(self):
+		return self._settings.settings.get(["plugins", "upseventsystem"], merged=True), 200
+
 	def get_settings_defaults(self):
 		return {
-
+			"customTriggers": [{}],
 		}
 
 	def get_template_configs(self):
@@ -114,7 +75,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 
 		octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
 
-		self.currentSettings: dict = self._settings.settings.get(["plugins", "upseventsystem"], merged=True)
+		self.ParseTriggers(data)
 
 	def get_assets(self):
 		return dict(
@@ -122,6 +83,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 			css=["css/upseventsystem.css"],
 			less=["less/upseventsystem.less"]
 		)
+
 
 __plugin_name__ = "UPS EventSystem"
 __plugin_pythoncompat__ = ">=2.7,<4"

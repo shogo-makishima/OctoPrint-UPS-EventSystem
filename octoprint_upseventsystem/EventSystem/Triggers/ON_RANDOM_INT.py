@@ -3,7 +3,7 @@ from .. import NUT_MANAGER
 from random import randint
 
 class ON_RANDOM_INT(Trigger):
-    def __init__(self, values: dict[str, str] = { "value" : "10", "min" : "0", "max": "10" }):
+    def __init__(self, values: dict[str, str] = { "value" : "10", "min" : "0", "max": "10" }, id: str = None):
         self.defaultValues = {
             "value" : "10",
             "min" : "0",
@@ -11,7 +11,7 @@ class ON_RANDOM_INT(Trigger):
         }
         """ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР! Базовые переменные!"""
 
-        super(ON_RANDOM_INT, self).__init__("ON_RANDOM_INT", values)
+        super(ON_RANDOM_INT, self).__init__("ON_RANDOM_INT", values, id)
 
     def Check(self) -> bool:
         """

@@ -1,7 +1,7 @@
 from nut2 import PyNUTClient
 from . import jsonpickle
 
-DEBUG: bool = True
+DEBUG: bool = False
 """Использовать ли эмулятор NUT"""
 
 if (DEBUG):

@@ -1,6 +1,9 @@
 # OctoPrint-UPS-EventSystem
 
-Plugin which add small UPS EventSystem in OctoPrint
+Plugin under development, working isn't ensure
+<br/><br/>
+Plugin which add small UPS EventSystem in OctoPrint.
+<br/>
 This OctoPrint plugin interfaces with a UPS monitored by NUT (Network UPS Tools).
 
 ![image](https://user-images.githubusercontent.com/48924544/177372833-b37be0b3-e24f-465c-8639-3cbeaf9507f3.png)

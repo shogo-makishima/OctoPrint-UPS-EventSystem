@@ -11,6 +11,6 @@ This OctoPrint plugin interfaces with a UPS monitored by NUT (Network UPS Tools)
 # Requirements
 NUT must be configured by the user. This plugin does not alter NUT configuration whatsoever.
 
-P.S. For more infomation read WiKi
+P.S. For more information read WiKi
 
 

@@ -4,6 +4,8 @@ from .NutManager import NUT_MANAGER
 
 from .Debug import Debug
 
+from .PrinerManager import PrinterManager
+
 from .Event import Event, GenerateID
 from .Trigger import Trigger
 

@@ -10,8 +10,12 @@ from .EventSystem import *
 class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.TemplatePlugin, octoprint.plugin.SettingsPlugin, octoprint.plugin.AssetPlugin, octoprint.plugin.BlueprintPlugin):
 	def on_after_startup(self):
 		Debug.LOGGER = self._logger
+		PrinterManager.PRINTER = self._printer
 
-		self.ParseTriggers(self._settings.settings.get(["plugins", "upseventsystem"], merged=True))
+		settings = self._settings.settings.get(["plugins", "upseventsystem"], merged=True)
+
+		self.ParseTriggers(settings)
+		NUT_MANAGER.upsName = settings["currentUPS"]
 
 		self.updateTimer = octoprint.util.RepeatedTimer(0.25, self.Update)
 		self.updateTimer.start()
@@ -36,7 +40,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 			EVENT_MANAGER.Update()
 		except Exception as exception:
 			Debug.Error(Debug, "ERROR")
-			Debug.LOGGER.exception()
+			Debug.LOGGER.exception(exception)
 
 	def ParseTriggers(self, data) -> None:
 		"""
@@ -60,14 +64,24 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 	def GetCustomTriggersList(self):
 		return self._settings.settings.get(["plugins", "upseventsystem"], merged=True), 200
 
+	@octoprint.plugin.BlueprintPlugin.route("/get_ups_list", methods=["GET"])
+	def GetUpsList(self):
+		return { "ups": NUT_MANAGER.GetUpsList() }
+
+	@octoprint.plugin.BlueprintPlugin.route("/get_current_battery_charge", methods=["GET"])
+	def GetCurrentBatteryCharge(self):
+		return { "charge" : NUT_MANAGER.GetBatteryCharge() }, 200
+
 	def get_settings_defaults(self):
 		return {
 			"customTriggers": [{}],
+			"currentUPS": NUT_MANAGER.upsList[0] if (len(NUT_MANAGER.upsList) > 0) else "none",
 		}
 
 	def get_template_configs(self):
 		return [
-			dict(type="settings", custom_bindings=True)
+			dict(type="settings", custom_bindings=True),
+			dict(type="navbar", custom_bindings=True),
 		]
 
 	def on_settings_save(self, data):
@@ -76,6 +90,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
 
 		self.ParseTriggers(data)
+		NUT_MANAGER.upsName = data["currentUPS"]
 
 	def get_assets(self):
 		return dict(

@@ -18,17 +18,13 @@ class Debug:
     LOGGER = None
 
     def Message(self, object: object = "MESSAGE", withDate: bool = True):
-        print(f"{Colored.TEXT_BOLD}{Colored.TEXT_BLINK}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} MESSAGE: {Colored.TEXT_STANDART}{object.__str__()}")
-        self.LOGGER.info(f"{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} MESSAGE: {object.__str__()}")
+        self.LOGGER.info(f"{Colored.TEXT_BOLD}{Colored.TEXT_BLINK}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} MESSAGE: {Colored.TEXT_STANDART}{object.__str__()}")
 
     def Success(self, object: object = "SUCCESS", withDate: bool = True):
-        print(f"{Colored.TEXT_BOLD}{Colored.TEXT_GREEN}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} SUCCESS: {Colored.TEXT_STANDART}{object.__str__()}")
-        self.LOGGER.info(f"{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} SUCCESS: {object.__str__()}")
+        self.LOGGER.info(f"{Colored.TEXT_BOLD}{Colored.TEXT_GREEN}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} SUCCESS: {Colored.TEXT_STANDART}{object.__str__()}")
 
     def Warning(self, object: object = "WARNING", withDate: bool = True):
-        print(f"{Colored.TEXT_BOLD}{Colored.TEXT_YELLOW}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} WARNING: {Colored.TEXT_STANDART}{object.__str__()}")
-        self.LOGGER.info(f"{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} WARNING: {object.__str__()}")
+        self.LOGGER.info(f"{Colored.TEXT_BOLD}{Colored.TEXT_YELLOW}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} WARNING: {Colored.TEXT_STANDART}{object.__str__()}")
 
     def Error(self, object: object = "ERROR", withDate: bool = True):
-        print(f"{Colored.TEXT_BOLD}{Colored.TEXT_RED}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} ERROR: {Colored.TEXT_STANDART}{object.__str__()}")
-        self.LOGGER.info(f"{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} ERROR: {object.__str__()}")
+        self.LOGGER.info(f"{Colored.TEXT_BOLD}{Colored.TEXT_RED}{Colored.TEXT_ITALIC}{datetime.now().strftime('[%Y.%m.%d %H:%M:%S] -->') if (withDate) else ''} ERROR: {Colored.TEXT_STANDART}{object.__str__()}")

@@ -23,3 +23,10 @@
 ###### Вывод строки в консоль
 #### s [str] -> "Hello, World!"
 ###### Любая строка
+
+### PT_SEND_GCODE [gcode] [state]
+###### Отправка GCODE на принтер
+#### gcode [str] -> "M115"
+###### Строка GCODE
+#### state [str] -> ANY | OPEN_SERIAL | DETECT_SERIAL | DETECT_BAUDRATE | CONNECTING | OPERATIONAL | PRINTING | PAUSED | CLOSED | ERROR | CLOSED_WITH_ERROR | TRANSFERING_FILE | OFFLINE | UNKNOWN | NONE
+###### Nекущее состояние принтера

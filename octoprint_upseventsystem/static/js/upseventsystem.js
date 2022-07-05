@@ -168,22 +168,32 @@ $(function() {
         // Список триггеров для Drop-Down'а
         self.settingsTriggers = ko.observable();
 
+        // Текущий ИБП
+        self.currentUPS = ko.observable();
+
+        // Список ИБП
+        self.upsList = ko.observable();
+
         // Список событий для Drop-Down'а
         self.settingsEvents = ko.observable();
 
+        // Текущий заряд батареи
+        self.currentBatteryCharge = ko.observable();
+
         self.onBeforeBinding = function() {
             self.getTriggersList();
+            self.getUpsList();
             self.getCustomTriggersList();
+            self.getCurrentBatteryCharge();
         }
 
         // Сохранить настройки
         self.saveData = function() {
-            console.log(self.customTriggers());
-
             let data = {
                 plugins: {
                     upseventsystem: {
                         customTriggers: self.customTriggers(),
+                        currentUPS: self.currentUPS(),
                     }
                 }
             };
@@ -208,6 +218,49 @@ $(function() {
         self.removeTrigger = function (ID) {
             let trigger = self.findTriggerById(ID);
             self.customTriggers.remove(trigger);
+        }
+
+        // Получить список триггеров и событий
+        self.getCurrentBatteryCharge = function() {
+            $.ajax({
+                type: "GET",
+                url: "plugin/upseventsystem/get_current_battery_charge",
+                cache: false,
+                dataType: "text/json",
+                statusCode: {
+                    200: function(data) {
+                        let json = JSON.parse(data.responseText);
+                        self.currentBatteryCharge(json["charge"]);
+                    },
+                },
+            });
+
+            window.setTimeout(self.getCurrentBatteryCharge, 2000);
+        }
+
+        // Получить список триггеров и событий
+        self.getUpsList = function() {
+            $.ajax({
+                type: "GET",
+                url: "plugin/upseventsystem/get_ups_list",
+                cache: false,
+                dataType: "text/json",
+                async: false,
+                statusCode: {
+                    200: function(data) {
+                        let json = JSON.parse(data.responseText);
+                        self.upsList(json["ups"])
+
+                        let ups = self.settings.settings.plugins.upseventsystem.currentUPS();
+                        if (ups === "none") {
+                            if (json["ups"].length > 0) {
+                                self.currentUPS(json["ups"][0].name);
+                            }
+                        } else
+                            self.currentUPS(self.settings.settings.plugins.upseventsystem.currentUPS());
+                    }
+                }
+            });
         }
 
         // Получить список триггеров и событий
@@ -243,7 +296,6 @@ $(function() {
                 statusCode: {
                     200: function(data) {
                         let triggersJson = JSON.parse(data.responseText)["customTriggers"];
-                        console.log("TRIGGERS: " + JSON.stringify(triggersJson));
 
                         if (JSON.stringify(triggersJson) === "[{}]") return;
 
@@ -261,7 +313,6 @@ $(function() {
                             }
 
                             self.customTriggers.push(newTrigger);
-
                         }
                     }
                 }
@@ -282,6 +333,6 @@ $(function() {
 
         // Finally, this is the list of all elements we want this view model to be bound to.
         // [document.getElementById("settings_plugin_upseventsystem")]
-        ["#settings_plugin_upseventsystem"]
+        ["#settings_plugin_upseventsystem", "#navbar_plugin_upseventsystem"]
     ]);
 });

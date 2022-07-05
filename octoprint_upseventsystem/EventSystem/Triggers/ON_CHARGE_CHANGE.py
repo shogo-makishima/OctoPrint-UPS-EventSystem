@@ -23,7 +23,7 @@ class ON_CHARGE_CHANGE(Trigger):
     def Check(self) -> bool:
         b_ret: bool = False
 
-        mode: str = str(self.values["mode"])
+        mode: str = str(self.values["mode"]).upper()
         charge: int = int(self.values["charge"])
 
         currentCharge: int = NUT_MANAGER.GetBatteryCharge()

@@ -2,8 +2,17 @@ from .. import Event
 
 from .PT_LOG import PT_LOG
 from .PT_ERROR import PT_ERROR
+from .PT_WARNING import PT_WARNING
+from .PT_SUCCESS import PT_SUCCESS
+from .PT_SEND_GCODE import PT_SEND_GCODE
+from .PT_RESUME_PRINT import PT_RESUME_PRINT
+from .PT_PAUSE_PRINT import PT_PAUSE_PRINT
 
 EVENTS_DICT: dict[str, Event] = {
     "PT_LOG": PT_LOG,
     "PT_ERROR": PT_ERROR,
+    "PT_WARNING": PT_WARNING,
+    "PT_SEND_GCODE": PT_SEND_GCODE,
+    "PT_RESUME_PRINT": PT_RESUME_PRINT,
+    "PT_PAUSE_PRINT": PT_PAUSE_PRINT,
 }

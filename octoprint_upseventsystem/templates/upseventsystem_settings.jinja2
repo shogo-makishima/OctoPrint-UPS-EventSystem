@@ -3,6 +3,7 @@
 
 <form class="form-horizontal">
     <div style="width: 100%; text-align: left;">
+        <select class="dropdown" style="display: inline-block;" data-bind="options: $root.upsList, value: currentUPS, optionsValue: 'name', optionsText: 'name', valueAllowUnset: true"></select>
         <button style="display: inline-block;" class="btn btn-primary" data-bind="click: addNewTrigger">{{ _('ADD TRIGGER') }}</button>
         <button style="display: inline-block;" class="btn" data-bind="click: $root.saveData">{{ _('SAVE') }}</button>
     </div>

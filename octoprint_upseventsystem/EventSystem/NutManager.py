@@ -88,6 +88,15 @@ class NutManager:
         """
         return int(self.upsValues["battery.charge"])
 
+    def GetUpsList(self) -> list:
+        """
+        Получить список ИБП
+        \n
+        :return: [list] => список ибп
+        """
+        return [{ "name": ups } for ups in self.upsList]
+
+
     def GetInputVoltage(self) -> int:
         """
         Получить входящее в ИБП напряжение

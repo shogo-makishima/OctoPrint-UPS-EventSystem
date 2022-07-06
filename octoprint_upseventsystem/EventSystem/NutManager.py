@@ -13,7 +13,7 @@ class NutManager:
     Менеджер ИБП
     """
     def __init__(self) -> None:
-        self.CLIENT = PyNUTClient("host.docker.internal") if (not DEBUG) else None
+        self.CLIENT = PyNUTClient("172.19.0.1") if (not DEBUG) else None
         """Nut клиент"""
 
         self.upsList: list[str] = []

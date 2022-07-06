@@ -1,4 +1,4 @@
-from . import Event, GenerateID
+from . import Event, GenerateID, MergeDicts
 
 class Trigger:
     """

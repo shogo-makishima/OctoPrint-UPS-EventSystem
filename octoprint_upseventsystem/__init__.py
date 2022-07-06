@@ -12,6 +12,8 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		Debug.LOGGER = self._logger
 		PrinterManager.PRINTER = self._printer
 
+		NUT_MANAGER.UpdateUpsList()
+
 		if (self._settings != None):
 			settings = self._settings.settings.get(["plugins", "upseventsystem"], merged=True)
 

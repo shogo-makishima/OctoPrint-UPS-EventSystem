@@ -2,6 +2,16 @@ import random
 
 LETTERS: str = """qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"""
 
+def MergeDicts(dict1, dict2) -> None:
+    """
+    Склеить словари
+    \n
+    :param dict1: [dict] => первый словарь
+    :param dict2: [dict] => второй словарь
+    :return: [dict] => новый словарь [dict2 > dict1]
+    """
+    return { **dict1, **dict2 }
+
 def GenerateID(type: str = "T", length: int = 32) -> str:
     """
     Сгенерировать ID объекта
@@ -22,7 +32,7 @@ class Event:
         self.name = name
         """Имя события"""
 
-        self.values = self.defaultValues | values
+        self.values = MergeDicts(self.defaultValues, values)
         """Переменные события"""
 
         self.ID = id if (id != None) else GenerateID("E", 32)

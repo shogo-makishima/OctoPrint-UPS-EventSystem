@@ -8,10 +8,10 @@ class Trigger:
         self.name = name
         """Имя триггера"""
 
-        self.events: list[Event] = []
+        self.events: list = []
         """Список присоединенных событий"""
 
-        self.values = self.defaultValues | values
+        self.values = MergeDicts(self.defaultValues, values)
         """Список переменных для проверки состояния триггера"""
 
         self.id = id if (id != None) else GenerateID("T", 32)

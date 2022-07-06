@@ -6,7 +6,7 @@ from .Debug import Debug
 
 from .PrinerManager import PrinterManager
 
-from .Event import Event, GenerateID
+from .Event import Event, GenerateID, MergeDicts
 from .Trigger import Trigger
 
 from .Events import EVENTS_DICT

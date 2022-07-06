@@ -4,6 +4,7 @@ import socket
 
 DEBUG: bool = False
 """Использовать ли эмулятор NUT"""
+USING_DOCKER: bool = False
 
 if (DEBUG):
     import requests

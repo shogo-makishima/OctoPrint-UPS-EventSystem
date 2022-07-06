@@ -12,7 +12,7 @@ class NutManager:
     Менеджер ИБП
     """
     def __init__(self) -> None:
-        self.CLIENT = PyNUTClient() if (not DEBUG) else None
+        self.CLIENT = PyNUTClient("0.0.0.0") if (not DEBUG) else None
         """Nut клиент"""
 
         self.upsList: list[str] = []

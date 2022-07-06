@@ -18,7 +18,7 @@ class Event:
     """
     Класс события
     """
-    def __init__(self, name: str = "PT_LOG", values: dict[str, str] = { "x": "10" }, id: str = None) -> None:
+    def __init__(self, name: str = "PT_LOG", values: dict = { "x": "10" }, id: str = None) -> None:
         self.name = name
         """Имя события"""
 

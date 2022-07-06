@@ -3,7 +3,7 @@ from .. import NUT_MANAGER
 from random import randint
 
 class ON_RANDOM_INT(Trigger):
-    def __init__(self, values: dict[str, str] = { "value" : "10", "min" : "0", "max": "10" }, id: str = None):
+    def __init__(self, values: dict = { "value" : "10", "min" : "0", "max": "10" }, id: str = None):
         self.defaultValues = {
             "value" : "10",
             "min" : "0",

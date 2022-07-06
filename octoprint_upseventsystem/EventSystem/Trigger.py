@@ -4,7 +4,7 @@ class Trigger:
     """
     Класс триггера, который вызывает функцию события
     """
-    def __init__(self, name: str = "ON_TIME_CHANGE", values: dict[str, str] = { "x" : 10 }, id: str = None) -> None:
+    def __init__(self, name: str = "ON_TIME_CHANGE", values: dict = { "x" : 10 }, id: str = None) -> None:
         self.name = name
         """Имя триггера"""
 

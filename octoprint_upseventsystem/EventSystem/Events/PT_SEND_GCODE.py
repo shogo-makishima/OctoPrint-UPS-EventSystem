@@ -1,7 +1,7 @@
 from .. import Event, Debug, PrinterManager
 
 class PT_SEND_GCODE(Event):
-    def __init__(self, values: dict[str, str] = { "gcode" : "M115" }, id: str = None):
+    def __init__(self, values: dict = { "gcode" : "M115" }, id: str = None):
         self.defaultValues = {
             "gcode": "M115",
             "state": "ANY",

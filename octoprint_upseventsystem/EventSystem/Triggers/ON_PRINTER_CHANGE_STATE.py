@@ -3,7 +3,7 @@ from .. import NUT_MANAGER, PrinterManager, Debug
 from random import randint
 
 class ON_PRINTER_CHANGE_STATE(Trigger):
-    def __init__(self, values: dict[str, str] = { }, id: str = None):
+    def __init__(self, values: dict = { }, id: str = None):
         self.defaultValues = {
             "stateFrom" : "ANY",
             "stateTo" : "PRINTING"

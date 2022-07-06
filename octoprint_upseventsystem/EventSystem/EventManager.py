@@ -9,7 +9,7 @@ class EventManager:
     Менеджер событий
     """
     def __init__(self) -> None:
-        self.listTriggers: [Trigger] = []
+        self.listTriggers: list = []
         """Список триггеров"""
 
     def Update(self) -> None:
@@ -47,8 +47,6 @@ class EventManager:
         :return: None
         """
         self.listTriggers.clear()
-
-        print(list)
 
         if (list == [{}]):
             return

@@ -3,7 +3,7 @@ from .. import NUT_MANAGER
 from random import randint
 
 class ON_POWER_OFF(Trigger):
-    def __init__(self, values: dict[str, str] = { }, id: str = None):
+    def __init__(self, values: dict = { }, id: str = None):
         self.defaultValues = {}
         """ОБЯЗАТЕЛЬНЫЙ ПАРАМЕТР! Базовые переменные!"""
 

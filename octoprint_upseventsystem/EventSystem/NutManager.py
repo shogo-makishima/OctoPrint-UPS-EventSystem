@@ -16,16 +16,16 @@ class NutManager:
         self.CLIENT = PyNUTClient("192.168.1.11") if (not DEBUG) else None
         """Nut клиент"""
 
-        self.upsList: list[str] = []
+        self.upsList: list = []
         """Список ИБП"""
 
         self.upsName: str = "cps-vector200-1"
         """Текущий ИБП"""
 
-        self.upsValues: dict[str, str] = {}
+        self.upsValues: dict = {}
         """Список переменных для ИБП"""
 
-        self.states: dict[str, bool] = {
+        self.states: dict = {
             "POWER_ON": True,
             "POWER_OFF": False,
             "CHARGING": True,

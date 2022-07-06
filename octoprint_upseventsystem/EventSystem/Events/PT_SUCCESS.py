@@ -1,7 +1,7 @@
 from .. import Event, Debug
 
 class PT_SUCCESS(Event):
-    def __init__(self, values: dict[str, str] = { "s" : "10" }, id: str = None):
+    def __init__(self, values: dict = { "s" : "10" }, id: str = None):
         self.defaultValues = {
             "s": "Hello, World!",
         }

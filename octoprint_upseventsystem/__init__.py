@@ -12,11 +12,10 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		Debug.LOGGER = self._logger
 		PrinterManager.PRINTER = self._printer
 
-		if (self._settings != None):
-			settings = self._settings.settings.get(["plugins", "upseventsystem"], merged=True)
+		settings = self._settings.settings.get(["plugins", "upseventsystem"], merged=True)
 
-			self.ParseTriggers(settings)
-			NUT_MANAGER.upsName = settings["currentUPS"]
+		self.ParseTriggers(settings)
+		NUT_MANAGER.upsName = settings["currentUPS"]
 
 		self.updateTimer = octoprint.util.RepeatedTimer(0.25, self.Update)
 		self.updateTimer.start()
@@ -37,9 +36,9 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		:return: None
 		"""
 		try:
-			if (self._settings != None):
+			if (NUT_MANAGER.upsName != "none"):
 				NUT_MANAGER.UpdateUpsValues()
-				EVENT_MANAGER.Update()
+			EVENT_MANAGER.Update()
 		except Exception as exception:
 			Debug.Error(Debug, "ERROR")
 			Debug.LOGGER.exception(exception)
@@ -76,7 +75,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 
 	def get_settings_defaults(self):
 		NUT_MANAGER.UpdateUpsList()
-		print(NUT_MANAGER.upsList)
+
 		return {
 			"customTriggers": [{}],
 			"currentUPS": NUT_MANAGER.upsList[list(NUT_MANAGER.upsList.keys())[0]] if (len(NUT_MANAGER.upsList) > 0) else "none",

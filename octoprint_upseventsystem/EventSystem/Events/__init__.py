@@ -10,7 +10,7 @@ from .PT_PAUSE_PRINT import PT_PAUSE_PRINT
 from .PT_SAVE_TEMP import PT_SAVE_TEMP
 from .PT_LOAD_TEMP import PT_LOAD_TEMP
 
-EVENTS_DICT: dict[str, Event] = {
+EVENTS_DICT: dict = {
     "PT_LOG": PT_LOG,
     "PT_ERROR": PT_ERROR,
     "PT_WARNING": PT_WARNING,

@@ -111,7 +111,7 @@ class NutManager:
         \n
         :return: None
         """
-        self.upsList = self.CLIENT.list_ups() if (not DEBUG) else ["test"]
+        self.upsList = self.CLIENT.list_ups() if (not DEBUG) else ["test", "test1"]
 
 
 NUT_MANAGER: NutManager = NutManager()

@@ -12,8 +12,6 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		Debug.LOGGER = self._logger
 		PrinterManager.PRINTER = self._printer
 
-		NUT_MANAGER.UpdateUpsList()
-
 		if (self._settings != None):
 			settings = self._settings.settings.get(["plugins", "upseventsystem"], merged=True)
 
@@ -77,6 +75,8 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		return { "charge" : NUT_MANAGER.GetBatteryCharge() }, 200
 
 	def get_settings_defaults(self):
+		NUT_MANAGER.UpdateUpsList()
+		Debug.Warning(Debug, NUT_MANAGER.upsList)
 		return {
 			"customTriggers": [{}],
 			"currentUPS": NUT_MANAGER.upsList[0] if (len(NUT_MANAGER.upsList) > 0) else "none",

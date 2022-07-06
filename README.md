@@ -1,5 +1,7 @@
 # OctoPrint-UPS-EventSystem
 
+## Before use change IP in octoprint_upseventsystem/EventSystem/NutManager.py at line self.CLIENT = PyNUTClient("<IP Nut>")
+
 Plugin under development, working isn't ensure
 <br/><br/>
 Plugin which add small UPS EventSystem in OctoPrint.

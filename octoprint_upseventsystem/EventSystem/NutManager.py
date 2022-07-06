@@ -1,5 +1,6 @@
 from nut2 import PyNUTClient
 from . import jsonpickle
+import socket
 
 DEBUG: bool = False
 """Использовать ли эмулятор NUT"""
@@ -12,6 +13,11 @@ class NutManager:
     Менеджер ИБП
     """
     def __init__(self) -> None:
+        hostname = socket.gethostname()
+        IPAddr = socket.gethostbyname(hostname)
+
+        print(hostname, IPAddr)
+
         self.CLIENT = PyNUTClient("0.0.0.0") if (not DEBUG) else None
         """Nut клиент"""
 

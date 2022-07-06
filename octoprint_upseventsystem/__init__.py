@@ -79,7 +79,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 		print(NUT_MANAGER.upsList)
 		return {
 			"customTriggers": [{}],
-			"currentUPS": NUT_MANAGER.upsList[NUT_MANAGER.upsList.keys()[0]] if (len(NUT_MANAGER.upsList) > 0) else "none",
+			"currentUPS": NUT_MANAGER.upsList[list(NUT_MANAGER.upsList.keys())[0]] if (len(NUT_MANAGER.upsList) > 0) else "none",
 		}
 
 	def get_template_configs(self):

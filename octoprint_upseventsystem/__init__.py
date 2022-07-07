@@ -57,6 +57,24 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 			Debug.Error(Debug, "ERROR")
 			Debug.LOGGER.exception()
 
+	def GetGcode(self, comm_instance, phase, cmd, cmd_type, gcode, *args, **kwargs):
+		if (Debug.LOGGER):
+			if (kwargs["tags"] == None):
+				return
+
+			tags: dict = {}
+			for tag in kwargs["tags"]:
+				tagList = tag.split(":")
+				tags[tagList[0]] = tagList[1]
+
+			if ("source" not in list(tags.keys())):
+				return
+			if (tags["source"] == "plugin"):
+				return
+			elif (tags["source"] == "file"):
+				PrinterManager.LAST_GCODE["text"] = cmd
+				PrinterManager.LAST_GCODE["fileline"] = tags["fileline"]
+
 	@octoprint.plugin.BlueprintPlugin.route("/get_triggers_list", methods=["GET"])
 	def GetTriggersList(self):
 		return EVENT_MANAGER.GetSettingsDict(), 200
@@ -106,3 +124,7 @@ class UpsEventSystemPlugin(octoprint.plugin.StartupPlugin, octoprint.plugin.Temp
 __plugin_name__ = "UPS EventSystem"
 __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = UpsEventSystemPlugin()
+
+__plugin_hooks__ = {
+    "octoprint.comm.protocol.gcode.sent": __plugin_implementation__.GetGcode,
+}

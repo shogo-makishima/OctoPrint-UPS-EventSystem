@@ -1,6 +1,7 @@
 # OctoPrint-UPS-EventSystem
 
-## Before use change IP in octoprint_upseventsystem/EventSystem/NutManager.py at line self.CLIENT = PyNUTClient("<IP Nut>")
+Before use change IP in octoprint_upseventsystem/EventSystem/NutManager.py at line self.CLIENT = PyNUTClient("<IP Nut>") and Setup nut to netserver mode
+
 
 Plugin under development, working isn't ensure
 <br/><br/>
